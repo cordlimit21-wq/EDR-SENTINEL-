@@ -1,0 +1,78 @@
+{
+  "incidentId": "INC-2026-0042",
+  "title": "Zero-Day Ransomware Behavioral Burst & Quarantine",
+  "date": "10/08/2026",
+  "time": "09:41:25 UTC",
+  "timestamp": "10/08/2026, 09:41:25 UTC",
+  "severity": "CRITICAL",
+  "riskScore": "94 / 100",
+  "finalStatus": "CONTAINED (Quarantine Enforced)",
+  "endpoint": "WS-FINANCE-01",
+  "ip": "10.0.1.21",
+  "os": "Windows 11 Pro 23H2",
+  "mac": "00:50:56:A1:B2:C1",
+  "analyst": "SOC Lead Analyst & Sentinel Behavioral Kernel",
+  "executiveSummary": "At 09:41:02 UTC, Sentinel EDR intercepted a multi-stage zero-day ransomware attack attempting rapid in-place encryption across user documents and decoy honeytokens on WS-FINANCE-01. The rogue process (PID 4312) exhibited an anomalous rename velocity of 1,823 ops/min and surge in Shannon byte entropy to H=7.82. Within 11 milliseconds of touching Canary Trap TRAP-002, Sentinel's minifilter driver revoked the process file handles and placed the endpoint into an isolated network boundary. Zero corporate data was encrypted or exfiltrated.",
+  "timeline": [
+    {
+      "time": "09:41:02",
+      "event": "Process Spawn",
+      "detail": "PID 4312 (svchost_suspicious.exe) executed via PowerShell"
+    },
+    {
+      "time": "09:41:07",
+      "event": "File Burst",
+      "detail": "1,823 file read/write operations/min detected in EDR_Test"
+    },
+    {
+      "time": "09:41:12",
+      "event": "Rename Velocity Spike",
+      "detail": "Batch alteration (.locked extension appended)"
+    },
+    {
+      "time": "09:41:16",
+      "event": "Entropy Anomaly",
+      "detail": "Shannon entropy H = 7.82 observed on honeypot file"
+    },
+    {
+      "time": "09:41:21",
+      "event": "Risk Escalation",
+      "detail": "Dynamic composite score escalated to 78/100"
+    },
+    {
+      "time": "09:41:25",
+      "event": "Tripwire Hit & Containment",
+      "detail": "Canary TRAP-002 accessed. Score 94/100. Host isolated."
+    }
+  ],
+  "indicators": [
+    {
+      "type": "SHA256",
+      "value": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "type": "C2 IP",
+      "value": "185.220.101.44 (Port 443 / 8443)"
+    },
+    {
+      "type": "MITRE ATT&CK",
+      "value": "T1486 (Data Encrypted for Impact), T1490 (Shadow Copy Tampering)"
+    },
+    {
+      "type": "Canary Token",
+      "value": "CANARY_TOKEN_B6ED5D03 (Decoy Trap TRAP-002)"
+    }
+  ],
+  "containmentActions": [
+    "Process handle revoked via Sentinel Minifilter",
+    "Endpoint network isolated (NDIS quarantine filter applied)",
+    "Outbound C2 sockets dropped",
+    "Decoy honeypot integrity state updated to TAMPER_ATTEMPT_BLOCKED"
+  ],
+  "recommendations": [
+    "1. Re-image WS-FINANCE-01 from verified pre-incident snapshot.",
+    "2. Enforce PowerShell Constrained Language Mode on executive workstations.",
+    "3. Block external egress to IP subnet 185.220.101.0/24 at firewall level.",
+    "4. Rotate active Canary Honeytoken secrets across Decoy vault."
+  ]
+}

@@ -1,0 +1,198 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #f8fafc;
+    --text-primary: #0f172a;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+  }
+
+  html.dark {
+    --bg-primary: #05070d;
+    --text-primary: #f1f5f9;
+    --card-bg: rgba(13, 19, 34, 0.76);
+    --card-border: rgba(255, 255, 255, 0.08);
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  
+  #root {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    border-inline: none;
+  }
+}
+
+/* Custom Cyber SOC scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+html.dark ::-webkit-scrollbar-track {
+  background: #05070d;
+}
+
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ea580c;
+}
+
+/* Adaptive Cyber Card */
+.cyber-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html.dark .cyber-card {
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+}
+
+.cyber-card:hover {
+  border-color: rgba(249, 115, 22, 0.3);
+  box-shadow: 0 8px 30px -4px rgba(249, 115, 22, 0.12);
+}
+
+.cyber-card-glow-orange {
+  border-color: rgba(249, 115, 22, 0.5) !important;
+  box-shadow: 0 0 25px -2px rgba(249, 115, 22, 0.3) !important;
+}
+
+.cyber-card-glow-purple {
+  border-color: rgba(168, 85, 247, 0.5) !important;
+  box-shadow: 0 0 25px -2px rgba(168, 85, 247, 0.3) !important;
+}
+
+.cyber-card-glow-cyan {
+  border-color: rgba(6, 182, 212, 0.4) !important;
+  box-shadow: 0 0 20px -3px rgba(6, 182, 212, 0.25) !important;
+}
+
+.cyber-card-glow-rose {
+  border-color: rgba(244, 63, 94, 0.5) !important;
+  box-shadow: 0 0 25px -2px rgba(244, 63, 94, 0.35) !important;
+}
+
+/* Sub-elements inside cards */
+.cyber-tile {
+  background: rgba(241, 245, 249, 0.85);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  color: #0f172a;
+}
+html.dark .cyber-tile {
+  background: rgba(10, 14, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.cyber-table-header {
+  background: #f1f5f9;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
+}
+html.dark .cyber-table-header {
+  background: rgba(10, 14, 26, 0.85);
+  color: #94a3b8;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.cyber-table-row {
+  border-bottom: 1px solid #f1f5f9;
+  color: #0f172a;
+}
+html.dark .cyber-table-row {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  color: #f1f5f9;
+}
+.cyber-table-row:hover {
+  background: #f8fafc;
+}
+html.dark .cyber-table-row:hover {
+  background: rgba(15, 23, 42, 0.4);
+}
+
+.cyber-input {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #0f172a;
+}
+html.dark .cyber-input {
+  background: rgba(10, 14, 26, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f1f5f9;
+}
+
+/* Subtle cybersecurity grid background */
+.cyber-grid {
+  background-color: #05070d;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(249, 115, 22, 0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168, 85, 247, 0.06), transparent 70%),
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+}
+
+html:not(.dark) .cyber-grid {
+  background-color: #f8fafc;
+  background-image: 
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(249, 115, 22, 0.06), transparent 70%),
+    linear-gradient(to right, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 32px 32px, 32px 32px;
+}
+
+/* Text glow accents */
+.text-glow-orange {
+  text-shadow: 0 0 14px rgba(249, 115, 22, 0.5);
+}
+
+.text-glow-purple {
+  text-shadow: 0 0 14px rgba(168, 85, 247, 0.5);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 12px rgba(6, 182, 212, 0.4);
+}
+
+.text-glow-rose {
+  text-shadow: 0 0 14px rgba(244, 63, 94, 0.5);
+}
+
+.text-glow-emerald {
+  text-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}

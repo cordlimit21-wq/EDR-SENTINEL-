@@ -1,0 +1,6 @@
+# EDR Protected Test File - Document 1
+This is a benign sample corporate memorandum for testing behavioral EDR.
+Department: Strategic Planning
+Sensitivity: Normal Internal
+
+[Benign Update - 2026-09-21 14:51:25] Reviewed executive notes.
