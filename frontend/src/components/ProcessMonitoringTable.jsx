@@ -12,6 +12,7 @@ import {
   ArrowRight,
   Zap
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ProcessMonitoringTable({ 
   events = [], 
@@ -96,6 +97,7 @@ export default function ProcessMonitoringTable({
               <span className="text-[10px] px-2 py-0.2 rounded-full bg-cyan-100 dark:bg-cyan-950/80 text-cyan-800 dark:text-cyan-300 border border-cyan-300 dark:border-cyan-500/30">
                 {processList.length} Observed PIDs
               </span>
+              <FeatureExplainer featureKey="processes" />
             </h2>
             <p className="text-[10px] text-slate-500">
               Live OS process ancestry &amp; file interaction activity

@@ -15,8 +15,12 @@ import {
   AlertTriangle,
   RotateCw,
   ExternalLink,
-  ChevronRight
+  ChevronRight,
+  FileDown,
+  Loader2
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
+import InvestigationGuide from './InvestigationGuide';
 
 const API_BASE = "http://localhost:8000";
 
@@ -28,6 +32,51 @@ export default function IncidentsView({ theme = 'dark' }) {
   const [noteInput, setNoteInput] = useState('');
   const [isSubmittingNote, setIsSubmittingNote] = useState(false);
   const [aiGenerating, setAiGenerating] = useState(false);
+  const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
+  const [reportSuccess, setReportSuccess] = useState(false);
+  const [reportError, setReportError] = useState(null);
+
+  const handleDownloadPdf = async (incidentId) => {
+    if (!incidentId) return;
+    setIsDownloadingPdf(true);
+    setReportError(null);
+    setReportSuccess(false);
+
+    try {
+      let res = await fetch(`${API_BASE}/api/reports/${incidentId}/pdf`);
+      if (!res.ok) {
+        // Fallback POST
+        res = await fetch(`${API_BASE}/api/reports/generate-pdf`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(selectedIncident)
+        });
+      }
+
+      if (!res.ok) {
+        throw new Error(`Report generation failed: HTTP ${res.status}`);
+      }
+
+      const blob = await res.blob();
+      const url = window.URL.createObjectURL(new Blob([blob], { type: 'application/pdf' }));
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `SENTINEL_EDR_Report_${incidentId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      setReportSuccess(true);
+      setTimeout(() => setReportSuccess(false), 4000);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      setReportError(err.message || 'Failed to download report PDF');
+      setTimeout(() => setReportError(null), 5000);
+    } finally {
+      setIsDownloadingPdf(false);
+    }
+  };
 
   const fetchIncidents = async () => {
     try {
@@ -118,6 +167,8 @@ export default function IncidentsView({ theme = 'dark' }) {
             <span className="text-[11px] font-mono text-rose-500 font-bold uppercase tracking-widest">INCIDENT INVESTIGATION CONSOLE</span>
             <span className="text-slate-400">•</span>
             <span className="text-xs font-mono text-slate-500">CASE ID: {selectedIncident.id}</span>
+            <span className="text-slate-400">•</span>
+            <FeatureExplainer featureKey="threat-history" />
           </div>
           <h2 className="text-2xl font-bold font-mono text-slate-900 dark:text-white mt-1 flex items-center gap-2">
             {selectedIncident.threat_name}
@@ -128,11 +179,31 @@ export default function IncidentsView({ theme = 'dark' }) {
         </div>
 
         {/* Quick Top Actions */}
-        <div className="flex items-center gap-3 font-mono text-xs">
+        <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+          {/* Direct Incident Report Download */}
+          <button
+            onClick={() => handleDownloadPdf(selectedIncident.id)}
+            disabled={isDownloadingPdf}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/30 font-bold transition-all disabled:opacity-50 cursor-pointer shadow-sm active:scale-95"
+            title={`Download official forensic PDF report for ${selectedIncident.id}`}
+          >
+            {isDownloadingPdf ? (
+              <>
+                <Loader2 className="w-3.5 h-3.5 animate-spin text-orange-400" />
+                <span>GENERATING PDF...</span>
+              </>
+            ) : (
+              <>
+                <FileDown className="w-3.5 h-3.5 text-orange-400" />
+                <span>GENERATE PDF</span>
+              </>
+            )}
+          </button>
+
           {selectedIncident.status !== 'RESOLVED' && (
             <button
               onClick={handleContainIncident}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition-all shadow-md shadow-rose-900/30"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition-all shadow-md shadow-rose-900/30 cursor-pointer"
             >
               <Lock className="w-3.5 h-3.5" />
               <span>ISOLATE & CONTAIN</span>
@@ -141,7 +212,7 @@ export default function IncidentsView({ theme = 'dark' }) {
           {selectedIncident.status !== 'RESOLVED' ? (
             <button
               onClick={handleResolveIncident}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold transition-all cursor-pointer"
             >
               <CheckCircle2 className="w-3.5 h-3.5" />
               <span>MARK RESOLVED</span>
@@ -153,6 +224,26 @@ export default function IncidentsView({ theme = 'dark' }) {
           )}
         </div>
       </div>
+
+      {/* PDF Generation Alerts */}
+      {reportSuccess && (
+        <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs flex items-center justify-between gap-3 animate-fade-in">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span><b>Report Ready:</b> Downloaded <code>SENTINEL_EDR_Report_{selectedIncident.id}.pdf</code> with IST timestamps.</span>
+          </div>
+        </div>
+      )}
+
+      {reportError && (
+        <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 font-mono text-xs flex items-center gap-2 animate-fade-in">
+          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
+          <span><b>PDF Download Error:</b> {reportError}</span>
+        </div>
+      )}
+
+      {/* Beginner-Friendly Investigation Workflow Guide */}
+      <InvestigationGuide />
 
       {/* Primary KPI Ribbon for Incident */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-xs">

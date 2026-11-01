@@ -25,6 +25,8 @@ import {
   BarChart,
   Bar
 } from 'recharts';
+import FeatureExplainer from './FeatureExplainer';
+import InvestigationGuide from './InvestigationGuide';
 
 const API_BASE = "http://localhost:8000";
 
@@ -140,6 +142,8 @@ export default function OverviewView({
             </span>
             <span className="text-slate-400">•</span>
             <span className="text-slate-500 text-[11px]">{stats?.kernel_driver_status || "ATTACHED (Minifilter: SentinelTrap.sys)"}</span>
+            <span className="text-slate-400">•</span>
+            <FeatureExplainer featureKey="overview" />
           </div>
           <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Enterprise Security Operations Overview
@@ -159,6 +163,9 @@ export default function OverviewView({
           <span>{isSimulating ? "SIMULATING ATTACK..." : "SIMULATE RANSOMWARE ATTACK"}</span>
         </button>
       </div>
+
+      {/* Beginner-Friendly Incident Investigation Guide */}
+      <InvestigationGuide />
 
       {/* 2. SIX KPI CARDS (Exact values from specification) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">

@@ -17,6 +17,7 @@ import {
   Zap,
   ArrowRight
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ThreatHuntingView({ 
   events = [], 
@@ -104,6 +105,7 @@ export default function ThreatHuntingView({
                 <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 dark:bg-orange-950/80 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-500/30">
                   {events.length} Telemetry Events
                 </span>
+                <FeatureExplainer featureKey="threat-hunting" />
               </h1>
               <p className="text-[11px] text-slate-500">
                 Multi-attribute query &amp; heuristic correlation engine

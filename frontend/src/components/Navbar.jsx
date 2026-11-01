@@ -13,9 +13,15 @@ import {
   Play,
   CheckCircle2,
   AlertTriangle,
-  Lock
+  Lock,
+  LogOut,
+  Building,
+  KeyRound,
+  ShieldCheck,
+  ChevronDown
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar({ 
   onSimulateAttack, 
@@ -34,6 +40,39 @@ export default function Navbar({
   const [timeStr, setTimeStr] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [showNotifications, setShowNotifications] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileMenuRef = useRef(null);
+
+  const { user, logout } = useAuth();
+
+  // Close profile dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(e.target)) {
+        setShowProfileMenu(false);
+      }
+    }
+    if (showProfileMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showProfileMenu]);
+
+  // Compute initials from user.full_name
+  const initials = React.useMemo(() => {
+    if (!user || !user.full_name) return "SO";
+    const parts = user.full_name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }, [user]);
+
+  const handleLogout = async () => {
+    setShowProfileMenu(false);
+    await logout();
+    if (onNavigateHome) {
+      onNavigateHome();
+    }
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -78,14 +117,34 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Center: Environment Status Badge & UTC Clock */}
+        {/* Center: Environment Status Badge & Live Stream Status */}
         <div className="hidden lg:flex items-center gap-4">
-          {/* Environment Status */}
-          <div className="px-3 py-1 rounded-full bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-white/[0.08] flex items-center gap-2 text-[11px]">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-bold text-slate-700 dark:text-slate-200">DEMO ENVIRONMENT</span>
-            <span className="text-slate-400">•</span>
-            <span className="text-orange-500 font-bold">ACTIVE MONITORING</span>
+          {/* Connection & Mode Status */}
+          <div className="px-3 py-1 rounded-full bg-[#101A2B] border border-[#152238] flex items-center gap-2 text-[11px]">
+            {isSimulating ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-orange-400 animate-ping" />
+                <span className="text-orange-400 font-bold uppercase tracking-wider">SIMULATION LAB ACTIVE</span>
+              </>
+            ) : wsConnected ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="font-bold text-emerald-400">LIVE WEBSOCKET STREAM</span>
+                <span className="text-slate-600">•</span>
+                <span className="text-cyan-400 font-bold">EDR_Test/ ACTIVE</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-amber-400" />
+                <span className="font-bold text-amber-400">RECONNECTING BACKEND...</span>
+              </>
+            )}
+          </div>
+
+          {/* SLA Latency */}
+          <div className="text-slate-400 text-[11px] flex items-center gap-1.5">
+            <span className="text-slate-500 font-bold">LATENCY:</span>
+            <span className="text-cyan-400 font-mono font-bold">&lt; 10.8ms</span>
           </div>
 
           <div className="text-slate-400 text-[11px] flex items-center gap-1.5">
@@ -94,7 +153,7 @@ export default function Navbar({
           </div>
         </div>
 
-        {/* Right: Simulation trigger, Notifications, Theme Toggle, User Profile */}
+        {/* Right: Simulation trigger, Notifications, Theme Toggle */}
         <div className="flex items-center gap-3">
           
           {/* Simulation CTA */}
@@ -155,15 +214,92 @@ export default function Navbar({
 
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
 
-          {/* User Profile Avatar */}
-          <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-white/[0.08]">
-            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-orange-500 to-purple-600 flex items-center justify-center text-slate-950 font-bold text-[11px] shadow-sm">
-              SO
-            </div>
-            <div className="hidden xl:block text-left">
-              <div className="font-bold text-slate-900 dark:text-white text-[11px] leading-tight">SOC Lead</div>
-              <div className="text-[9px] text-slate-400 leading-tight">Tier-3 Analyst</div>
-            </div>
+          {/* User Profile / Account Section */}
+          <div className="relative pl-2 border-l border-slate-200 dark:border-white/[0.08]" ref={profileMenuRef}>
+            <button
+              onClick={() => setShowProfileMenu(!showProfileMenu)}
+              className="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/80 transition-colors cursor-pointer text-left focus:outline-none"
+              title="View Analyst Account Details & Session"
+            >
+              <div className="relative">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-orange-500 via-amber-400 to-cyan-500 flex items-center justify-center text-slate-950 font-bold text-xs shadow-md">
+                  {initials}
+                </div>
+                <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-[#090e1c]" />
+              </div>
+
+              <div className="hidden xl:block text-left">
+                <div className="font-bold text-slate-900 dark:text-white text-[11px] leading-tight truncate max-w-[130px]">
+                  {user?.full_name || "SOC Analyst"}
+                </div>
+                <div className="text-[9px] text-slate-400 leading-tight truncate max-w-[130px]">
+                  {user?.role || "Tier-3 Authorized"}
+                </div>
+              </div>
+
+              <ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-200 hidden xl:block ${showProfileMenu ? 'rotate-180 text-orange-400' : ''}`} />
+            </button>
+
+            {/* Profile Dropdown Card */}
+            {showProfileMenu && (
+              <div className="absolute right-0 top-full mt-2 w-80 p-4 rounded-2xl bg-white dark:bg-[#0A1020] border border-slate-200 dark:border-white/[0.1] shadow-2xl z-50 space-y-4 animate-in fade-in zoom-in-95 duration-150 font-mono text-xs">
+                
+                {/* Header Profile Identity */}
+                <div className="flex items-center gap-3 pb-3 border-b border-slate-100 dark:border-white/[0.06]">
+                  <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-orange-500 to-cyan-500 flex items-center justify-center text-slate-950 font-extrabold text-sm shadow-md shrink-0">
+                    {initials}
+                  </div>
+                  <div className="min-w-0">
+                    <h4 className="font-bold text-slate-900 dark:text-white text-xs truncate">
+                      {user?.full_name || "Security Analyst"}
+                    </h4>
+                    <p className="text-[10px] text-slate-400 truncate">
+                      {user?.email || "analyst@sentinel.defense"}
+                    </p>
+                    <span className="inline-block mt-1 px-2 py-0.5 rounded text-[9px] font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                      {user?.role || "SOC Lead Architect"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Account Details Specs */}
+                <div className="space-y-2 text-[11px]">
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/[0.04] flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Department:</span>
+                    <span className="text-slate-800 dark:text-slate-200 font-semibold truncate max-w-[160px]">
+                      {user?.department || "Cyber Defense Operations"}
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/[0.04] flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Clearance:</span>
+                    <span className="text-emerald-500 font-bold flex items-center gap-1">
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      Level 3 • Full Control
+                    </span>
+                  </div>
+
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-white/[0.04] flex items-center justify-between">
+                    <span className="text-slate-500 dark:text-slate-400">Account ID:</span>
+                    <span className="text-cyan-400 font-mono text-[10px]">
+                      {user?.id || "USR-AUTHORIZED"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Logout Button */}
+                <div className="pt-2 border-t border-slate-100 dark:border-white/[0.06]">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full py-2.5 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 border border-rose-500/30 hover:border-rose-500/50 font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-sm active:scale-98"
+                  >
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out &amp; Lock Session</span>
+                  </button>
+                </div>
+
+              </div>
+            )}
           </div>
 
         </div>

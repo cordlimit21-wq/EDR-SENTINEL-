@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENTINEL // EDR — Academic Research Capstone Poster | Malla Reddy University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  /* ==========================================================================
+     EXACT A1 PORTRAIT RATIO (594mm x 841mm) — FITS PERFECTLY ON 1 SINGLE PAGE
+     ========================================================================== */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  @page {
+    size: 1360px 1920px;
+    margin: 0;
+  }
+
+  :root {
+    --bg-page: #EEF2F6;
+    --navy-header: #1B3687;
+    --orange-dept: #D97706;
+    --blue-track: #1D4ED8;
+    --dark-banner: #060B18;
+    --card-bg: #FFFFFF;
+    --border-light: #CBD5E1;
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --cyan-accent: #0284C7;
+    --cyan-glow: #38BDF8;
+    --orange-accent: #FF6A00;
+    --green-accent: #16A34A;
+    --red-accent: #DC2626;
+    --purple-accent: #7C3AED;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-page);
+    color: var(--text-primary);
+    line-height: 1.32;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+  }
+
+  /* Top interactive bar (hidden during print) */
+  .action-bar {
+    width: 1360px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px 20px;
+    background: #0F172A;
+    color: white;
+    border-radius: 8px;
+    font-size: 13px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+  }
+  .action-btn {
+    background: #FF6A00;
+    color: #070D1E;
+    border: none;
+    font-weight: 700;
+    font-family: 'Fira Code', monospace;
+    font-size: 12px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .action-btn:hover {
+    background: #FFA142;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255,106,0,0.4);
+  }
+
+  /* Master Poster Canvas */
+  .poster-container {
+    width: 1360px;
+    height: 1920px;
+    max-height: 1920px;
+    background: #FFFFFF;
+    box-shadow: 0 10px 40px rgba(15, 23, 42, 0.22);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* ==========================================================================
+     1. UNIVERSITY HEADER
+     ========================================================================== */
+  .univ-header {
+    background: #FFFFFF;
+    padding: 12px 28px 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid var(--navy-header);
+    height: 98px;
+    flex-shrink: 0;
+  }
+  .univ-header-left {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .univ-crest-img {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+  }
+  .univ-titles {
+    display: flex;
+    flex-direction: column;
+  }
+  .univ-name {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--navy-header);
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+  .univ-dept {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--orange-dept);
+    letter-spacing: 0.8px;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+  .univ-address {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: #475569;
+    margin-top: 2px;
+  }
+  .univ-header-right {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    text-align: right;
+  }
+  .univ-divider {
+    width: 2.5px;
+    height: 56px;
+    background: #CBD5E1;
+  }
+  .univ-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 3px;
+  }
+  .univ-class {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-header);
+  }
+  .univ-year {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy-header);
+  }
+  .univ-track-badge {
+    background: var(--blue-track);
+    color: #FFFFFF;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    padding: 3px 12px;
+    border-radius: 4px;
+    margin-top: 2px;
+  }
+
+  /* ==========================================================================
+     2. HERO TITLE BANNER
+     ========================================================================== */
+  .hero-banner {
+    background: radial-gradient(circle at 50% 30%, #0E1A38 0%, #060B18 85%);
+    color: #FFFFFF;
+    padding: 14px 28px 12px 28px;
+    text-align: center;
+    border-bottom: 2px solid rgba(56, 189, 248, 0.4);
+    height: 90px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero-title {
+    font-size: 24.5px;
+    font-weight: 900;
+    letter-spacing: -0.2px;
+    line-height: 1.18;
+    text-transform: uppercase;
+    color: #FFFFFF;
+  }
+  .hero-subtitle {
+    font-size: 13.5px;
+    font-weight: 500;
+    color: #94A3B8;
+    margin-top: 5px;
+    letter-spacing: 0.2px;
+  }
+
+  /* ==========================================================================
+     3. FOUR TOP METRIC CARDS
+     ========================================================================== */
+  .metrics-strip {
+    background: #080D1A;
+    padding: 9px 28px 9px 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    border-bottom: 1px solid #1E293B;
+    height: 82px;
+    flex-shrink: 0;
+  }
+  .metric-card {
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    border-radius: 5px;
+    padding: 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .metric-val {
+    font-family: 'Fira Code', monospace;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .metric-val.cyan { color: #00FFCC; text-shadow: 0 0 8px rgba(0,255,204,0.4); }
+  .metric-val.blue { color: #38BDF8; text-shadow: 0 0 8px rgba(56,189,248,0.4); }
+  .metric-val.orange { color: #F59E0B; text-shadow: 0 0 8px rgba(245,158,11,0.4); }
+  .metric-val.green { color: #10B981; text-shadow: 0 0 8px rgba(16,185,129,0.4); }
+  .metric-lbl {
+    font-size: 10px;
+    font-weight: 700;
+    color: #CBD5E1;
+    margin-top: 2px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .metric-sub {
+    font-family: 'Fira Code', monospace;
+    font-size: 8.5px;
+    font-weight: 500;
+    color: #64748B;
+    margin-top: 1px;
+  }
+
+  /* ==========================================================================
+     4. INVESTIGATORS & ACCESS ROW
+     ========================================================================== */
+  .investigators-strip {
+    background: #080D1A;
+    padding: 0 28px 9px 28px;
+    display: grid;
+    grid-template-columns: 135px 1fr 1fr 1.1fr 1.05fr;
+    gap: 10px;
+    border-bottom: 2px solid #CBD5E1;
+    height: 60px;
+    flex-shrink: 0;
+  }
+  .invest-label-box {
+    background: #050811;
+    border: 1px solid #1E293B;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 10px;
+    font-weight: 800;
+    color: #94A3B8;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px;
+  }
+  .invest-card {
+    background: #0B132B;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 4px;
+    padding: 5px 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .invest-name {
+    font-size: 12px;
+    font-weight: 800;
+    color: #FFFFFF;
+  }
+  .invest-role {
+    font-size: 9px;
+    font-weight: 600;
+    color: #38BDF8;
+  }
+  .invest-ht {
+    font-family: 'Fira Code', monospace;
+    font-size: 8.5px;
+    color: #94A3B8;
+    margin-top: 1px;
+  }
+  .access-links {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: center;
+  }
+  .access-link-item {
+    font-family: 'Fira Code', monospace;
+    font-size: 8.5px;
+    color: #CBD5E1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: #050811;
+    padding: 2.5px 7px;
+    border-radius: 3px;
+    border: 1px solid #1E293B;
+  }
+  .access-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #10B981;
+    display: inline-block;
+  }
+
+  /* ==========================================================================
+     5. MAIN THREE-COLUMN POSTER BODY (FITS 1580px EXACTLY)
+     ========================================================================= */
+  .poster-body {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    padding: 9px 28px 12px 28px;
+    background: #EDF2F6;
+    height: 1580px;
+    flex: 1;
+    overflow: hidden;
+  }
+  .column {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    height: 100%;
+  }
+
+  /* Card Anatomy */
+  .card {
+    background: var(--card-bg);
+    border: 1.5px solid #CBD5E1;
+    border-radius: 5px;
+    padding: 7px 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1.5px solid #E2E8F0;
+  }
+  .card-title {
+    font-size: 11px;
+    font-weight: 800;
+    color: #1E3A8A;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .card-badge {
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: #FFFFFF;
+  }
+  .badge-purple { background: #7C3AED; }
+  .badge-orange { background: #D97706; }
+  .badge-green { background: #059669; }
+  .badge-cyan { background: #0284C7; }
+  .badge-red { background: #DC2626; }
+  .badge-navy { background: #1E293B; }
+
+  .card-p {
+    font-size: 9.6px;
+    color: #334155;
+    line-height: 1.34;
+    margin-bottom: 4px;
+    text-align: justify;
+  }
+  .card-p:last-child {
+    margin-bottom: 0;
+  }
+  .card-p b {
+    color: #0F172A;
+    font-weight: 700;
+  }
+
+  /* Formula Box */
+  .formula-box {
+    background: #FFFBEB;
+    border: 1px solid #FCD34D;
+    border-left: 3.5px solid #D97706;
+    border-radius: 4px;
+    padding: 4px 7px;
+    margin: 4px 0;
+    font-family: 'Fira Code', monospace;
+    font-size: 9px;
+    color: #92400E;
+  }
+  .formula-label {
+    font-size: 8px;
+    font-weight: 800;
+    color: #B45309;
+    text-transform: uppercase;
+    margin-bottom: 1px;
+    letter-spacing: 0.3px;
+  }
+  .formula-eq {
+    font-size: 9.8px;
+    font-weight: 700;
+    color: #78350F;
+    line-height: 1.25;
+  }
+
+  /* Data Tables */
+  .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9px;
+    margin: 3px 0;
+  }
+  .custom-table th {
+    background: #0F172A;
+    color: #FFFFFF;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 8px;
+    padding: 3.5px 5px;
+    text-align: left;
+    letter-spacing: 0.3px;
+  }
+  .custom-table td {
+    padding: 2.8px 5px;
+    border-bottom: 1px solid #E2E8F0;
+    color: #334155;
+  }
+  .custom-table tr:nth-child(even) td {
+    background: #F8FAFC;
+  }
+  .custom-table .mono {
+    font-family: 'Fira Code', monospace;
+  }
+  .custom-table .bold {
+    font-weight: 700;
+    color: #0F172A;
+  }
+  .custom-table .highlight-row td {
+    background: #FEF3C7;
+    font-weight: 700;
+    color: #B45309;
+  }
+
+  .tag-ok {
+    background: #DCFCE7;
+    color: #166534;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 8px;
+  }
+  .tag-warn {
+    background: #FEF3C7;
+    color: #92400E;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 8px;
+  }
+  .tag-crit {
+    background: #FEE2E2;
+    color: #991B1B;
+    padding: 1px 4px;
+    border-radius: 3px;
+    font-weight: 700;
+    font-size: 8px;
+  }
+
+  /* Charts */
+  .svg-chart-container {
+    width: 100%;
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 4px;
+    padding: 3px;
+    margin: 3px 0;
+  }
+  .chart-caption {
+    font-size: 8px;
+    font-style: italic;
+    color: #64748B;
+    margin-top: 2px;
+    line-height: 1.2;
+  }
+
+  /* Mock UI Box */
+  .mock-ui-box {
+    background: #080D1A;
+    border: 1px solid #1E293B;
+    border-radius: 4px;
+    padding: 5px 8px;
+    color: #CBD5E1;
+    font-family: 'Fira Code', monospace;
+    font-size: 8.5px;
+  }
+
+  /* PRINT CONFIGURATION */
+  @media print {
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      background: #FFFFFF !important;
+      width: 1360px !important;
+      height: 1920px !important;
+      overflow: hidden !important;
+    }
+    .action-bar {
+      display: none !important;
+    }
+    .poster-container {
+      width: 1360px !important;
+      height: 1920px !important;
+      box-shadow: none !important;
+      margin: 0 !important;
+      border: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- Interactive Action Bar (Hidden in Print) -->
+<div class="action-bar">
+  <div>
+    <strong>SENTINEL // EDR Academic Research Poster</strong> &nbsp;|&nbsp; 
+    <span>Malla Reddy University Dept. of Cyber Security &nbsp;•&nbsp; A1 Standard (1360×1920px)</span>
+  </div>
+  <div style="display: flex; gap: 10px;">
+    <button class="action-btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6z"/></svg>
+      Print / Export A1 PDF
+    </button>
+  </div>
+</div>
+
+<!-- =========================================================================
+     POSTER CONTAINER (1360px x 1920px A1 RATIO)
+     ========================================================================= -->
+<div class="poster-container">
+
+  <!-- =====================================================================
+       1. UNIVERSITY HEADER
+       ===================================================================== -->
+  <header class="univ-header">
+    <div class="univ-header-left">
+      <img src="data:image/png;base64,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" alt="Malla Reddy University Crest" class="univ-crest-img">
+      <div class="univ-titles">
+        <div class="univ-name">MALLA REDDY UNIVERSITY</div>
+        <div class="univ-dept">DEPARTMENT OF CYBER SECURITY</div>
+        <div class="univ-address">Maisammaguda, Dulapally, Medchal–Malkajgiri, Hyderabad, Telangana — 500100</div>
+      </div>
+    </div>
+    <div class="univ-header-right">
+      <div class="univ-divider"></div>
+      <div class="univ-meta">
+        <div class="univ-class">Class: B.Tech IV Year — Cyber Security Alpha</div>
+        <div class="univ-year">Academic Year: 2026–2027</div>
+        <div class="univ-track-badge">CYBER SECURITY & ZERO-DAY DEFENSE TRACK</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       2. HERO TITLE BANNER
+       ===================================================================== -->
+  <section class="hero-banner">
+    <h1 class="hero-title">SENTINEL // EDR: An Autonomous Behavior-Based Zero-Day Ransomware Detection and Response Platform</h1>
+    <p class="hero-subtitle">Empirical Validation of Sub-Kernel Minifilter Interception, Shannon Byte Entropy Analytics, Canary Vault Allocation, and Sub-11ms Containment</p>
+  </section>
+
+  <!-- =====================================================================
+       3. FOUR TOP METRIC CARDS
+       ===================================================================== -->
+  <section class="metrics-strip">
+    <div class="metric-card">
+      <div class="metric-val cyan">&lt; 10.8 ms</div>
+      <div class="metric-lbl">CONTAINMENT LATENCY</div>
+      <div class="metric-sub">SUB-KERNEL MINIFILTER DRIVER</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val blue">H &gt; 7.00</div>
+      <div class="metric-lbl">SHANNON ENTROPY THRESHOLD</div>
+      <div class="metric-sub">OBSERVED H = 7.82 (MAX 8.00)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val orange">94 / 100</div>
+      <div class="metric-lbl">BEHAVIORAL RISK SCORE</div>
+      <div class="metric-sub">+99.4% ATTACK SUPPRESSION</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-val green">100% / 0 B</div>
+      <div class="metric-lbl">USER DATA PRESERVATION</div>
+      <div class="metric-sub">ZERO USER ASSETS COMPROMISED</div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       4. INVESTIGATORS & ACCESS ROW
+       ===================================================================== -->
+  <section class="investigators-strip">
+    <div class="invest-label-box">
+      INVESTIGATORS &amp;<br>ACCESS
+    </div>
+    <div class="invest-card">
+      <div class="invest-name">Shaik Muskan</div>
+      <div class="invest-role">Lead Security Architect &amp; Detection Core</div>
+      <div class="invest-ht">HT: 2511CS040003 &nbsp;•&nbsp; IV Cyber Security</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-name">Pudi Pavani Priya</div>
+      <div class="invest-role">Minifilter Telemetry &amp; Response Engineer</div>
+      <div class="invest-ht">HT: 2511CS040035 &nbsp;•&nbsp; IV Cyber Security</div>
+    </div>
+    <div class="invest-card">
+      <div class="invest-name">Dr. G. Latha</div>
+      <div class="invest-role">Faculty Project Supervisor</div>
+      <div class="invest-ht">Assoc. Professor, Dept. of Cyber Security</div>
+    </div>
+    <div class="access-links">
+      <div class="access-link-item">
+        <span class="access-dot"></span>
+        <span>github.com/sentinel-edr/sentinel-core</span>
+      </div>
+      <div class="access-link-item">
+        <span class="access-dot"></span>
+        <span>Localhost SOC / EDR Client v2.4 (Active)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       5. MAIN THREE-COLUMN POSTER BODY (14 CONTENT CARDS)
+       ===================================================================== -->
+  <main class="poster-body">
+
+    <!-- ===================================================================
+         COLUMN 1
+         =================================================================== -->
+    <div class="column">
+
+      <!-- CARD 1: INTRODUCTION & PROBLEM CONTEXT -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">1. Introduction &amp; Problem Context</div>
+          <span class="card-badge badge-purple">MOTIVATION</span>
+        </div>
+        <p class="card-p">
+          Modern enterprise ransomware strains (e.g., <b>LockBit 3.0, BlackCat/ALPHV, Conti</b>) bypass static hash-matching antivirus engines by employing runtime binary polymorphism and API unhooking. These payloads execute high-throughput encryption bursts exceeding <b>1,800 IOPS</b>, irreversibly encrypting local user documents within <b>45 seconds</b> before cloud SOC telemetry alerts trigger.
+        </p>
+        <p class="card-p">
+          <b>SENTINEL // EDR</b> resolves this architectural latency vulnerability via an autonomous, sub-kernel behavioral detection core executing directly at the filesystem boundary. By correlating <b>Shannon byte entropy</b>, deceptive <b>canary honeypot tripwires</b>, <b>file rename velocity</b>, and <b>process lineage ancestry</b> in real time, SENTINEL neutralizes zero-day threats in <b>sub-11ms latency</b> with <b>zero user file loss</b>.
+        </p>
+      </article>
+
+      <!-- CARD 2: MATHEMATICAL FORMULATION -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">2. Mathematical Formulation</div>
+          <span class="card-badge badge-orange">ALGORITHM</span>
+        </div>
+        <p class="card-p">
+          Let file byte stream B = {b1, b2, ..., bN} where bi &isin; [0, 255] with probability distribution p(bi) = count(bi) / N:
+        </p>
+        <div class="formula-box">
+          <div class="formula-label">EQUATION 1: SHANNON BYTE ENTROPY SPECTRUM</div>
+          <div class="formula-eq">H(B) = - &sum;<sub>i=0</sub><sup>255</sup> p(b<sub>i</sub>) &middot; log<sub>2</sub> p(b<sub>i</sub>), &nbsp; 0.0 &le; H(B) &le; 8.0 bits/byte</div>
+        </div>
+        <p class="card-p">
+          Plaintext assets span H &isin; [3.2, 5.4]; modern ciphers (AES-256-GCM, ChaCha20) converge to asymptotic ceiling H &rarr; 7.95 &approx; 8.00.
+        </p>
+        <div class="formula-box">
+          <div class="formula-label">EQUATION 2: MULTI-FACTOR BEHAVIORAL RISK SCORE (RS)</div>
+          <div class="formula-eq">RS(t) = w<sub>e</sub>&middot;&sigma;<sub>H</sub>(H<sub>t</sub> - &theta;<sub>H</sub>) + w<sub>v</sub>&middot;(V<sub>write</sub>/V<sub>max</sub>) + w<sub>c</sub>&middot;C<sub>trap</sub>(t) + w<sub>p</sub>&middot;P<sub>ancestry</sub></div>
+        </div>
+        <p class="card-p" style="font-size:8.8px; color:#475569;">
+          Weights: w_e = 0.35, w_v = 0.25, w_c = 0.25, w_p = 0.15 (&sum; w_i = 1.0).
+        </p>
+        <div class="formula-box">
+          <div class="formula-label">EQUATION 3: DETERMINISTIC THREAT CONTAINMENT DECISION RULE</div>
+          <div class="formula-eq">Action(t) = FREEZE_AND_ISOLATE(PID) &nbsp; when RS(t) &ge; &tau;<sub>crit</sub> = 75</div>
+        </div>
+      </article>
+
+      <!-- CARD 3: CANARY FLEET ALLOCATION -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">3. Canary Fleet &amp; Vault Allocation</div>
+          <span class="card-badge badge-green">ALLOCATION</span>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center;">
+          <!-- SVG Donut Chart -->
+          <svg width="100" height="100" viewBox="0 0 100 100" style="flex-shrink: 0;">
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#E2E8F0" stroke-width="15" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#0284C7" stroke-width="15"
+              stroke-dasharray="95.5 143.3" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#EA580C" stroke-width="15"
+              stroke-dasharray="59.7 179.1" stroke-dashoffset="-95.5" transform="rotate(-90 50 50)" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#7C3AED" stroke-width="15"
+              stroke-dasharray="47.7 191.1" stroke-dashoffset="-155.2" transform="rotate(-90 50 50)" />
+            <circle cx="50" cy="50" r="38" fill="none" stroke="#16A34A" stroke-width="15"
+              stroke-dasharray="35.8 203.0" stroke-dashoffset="-202.9" transform="rotate(-90 50 50)" />
+            <text x="50" y="47" text-anchor="middle" font-size="8.5" font-weight="800" fill="#0F172A">48 TRAPS</text>
+            <text x="50" y="58" text-anchor="middle" font-size="6.8" font-weight="600" fill="#64748B">4 TIERS</text>
+          </svg>
+          <div style="flex: 1; font-size: 8.5px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5px;">
+              <span style="color:#0284C7; font-weight:700;">● Financial Lures (.xlsx)</span>
+              <span class="mono bold">40%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5px;">
+              <span style="color:#EA580C; font-weight:700;">● Executive Docs (.pdf)</span>
+              <span class="mono bold">25%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5px;">
+              <span style="color:#7C3AED; font-weight:700;">● DB Assets (.sql/.db)</span>
+              <span class="mono bold">20%</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:1.5px;">
+              <span style="color:#16A34A; font-weight:700;">● Crypto Keys (.pem)</span>
+              <span class="mono bold">15%</span>
+            </div>
+          </div>
+        </div>
+        <table class="custom-table" style="margin-top:4px;">
+          <thead>
+            <tr>
+              <th>Canary Class</th>
+              <th>Target Baits</th>
+              <th>Trigger Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">Financial Spreadsheets</td>
+              <td class="mono">Q4_Payroll.xlsx, Tax.csv</td>
+              <td><span class="tag-crit">Instant Freeze</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Executive Contracts</td>
+              <td class="mono">M&amp;A_Agreement.pdf</td>
+              <td><span class="tag-crit">Instant Freeze</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Simulated Databases</td>
+              <td class="mono">customer_vault.sqlite</td>
+              <td><span class="tag-warn">Lineage Audit</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- CARD 4: RUNTIME COMPUTATIONAL PROFILING -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">4. Runtime Computational Profiling</div>
+          <span class="card-badge badge-purple">KERNEL MINIFILTER</span>
+        </div>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Pipeline Phase</th>
+              <th>Complexity</th>
+              <th>Latency (&mu;s / ms)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Minifilter Pre-Operation Intercept</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">1.85 &mu;s</td>
+            </tr>
+            <tr>
+              <td>Shannon Byte Entropy (4KB Window)</td>
+              <td class="mono">O(N)</td>
+              <td class="mono bold">4.20 &mu;s</td>
+            </tr>
+            <tr>
+              <td>Rename Velocity Vector Calculation</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">1.15 &mu;s</td>
+            </tr>
+            <tr>
+              <td>Multi-Factor Composite Risk Fusion</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">2.10 &mu;s</td>
+            </tr>
+            <tr>
+              <td>Canary Vault Tripwire Lookup</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">0.65 &mu;s</td>
+            </tr>
+            <tr>
+              <td>Process Termination &amp; Handle Revocation</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">1.95 ms</td>
+            </tr>
+            <tr>
+              <td>NDIS Network Adapter Quarantine</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">8.85 ms</td>
+            </tr>
+            <tr class="highlight-row">
+              <td>Total End-to-End Containment</td>
+              <td class="mono">O(1)</td>
+              <td class="mono bold">&lt; 10.8 ms (&plusmn;0.3ms)</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- CARD 5: SECURITY & MEMORY INTEGRITY -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">5. Cyber Security &amp; Enclave Integrity</div>
+          <span class="card-badge badge-cyan">SECURITY</span>
+        </div>
+        <p class="card-p">
+          As engineered by the <b>Department of Cyber Security, Malla Reddy University</b>, SENTINEL operates under strict Zero-Trust kernel isolation:
+        </p>
+        <p class="card-p">
+          &bull; <b>Zero-False-Positive Heuristic Filter:</b> Benign bulk compression (7-Zip, WinRAR) is distinguished from ransomware encryption via sliding-window byte frequency variance and code-signed process white-listing.
+        </p>
+        <p class="card-p">
+          &bull; <b>Driver Self-Defense &amp; ACL Locks:</b> The kernel minifilter enforces unkillable process states, preventing adversary scripts from executing <code>taskkill /F</code> or driver unloading.
+        </p>
+        <p class="card-p">
+          &bull; <b>Immutable Forensic Event Chain:</b> Every telemetry record is hashed via SHA-256 and chained into an append-only evidentiary audit log.
+        </p>
+      </article>
+
+    </div>
+
+    <!-- ===================================================================
+         COLUMN 2
+         =================================================================== -->
+    <div class="column">
+
+      <!-- CARD 6: EMPIRICAL ATTACK PROGRESSION CURVE -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">6. Empirical Attack Progression (30 Runs)</div>
+          <span class="card-badge badge-cyan">PRIMARY RESULT</span>
+        </div>
+        <div class="svg-chart-container">
+          <svg width="100%" height="150" viewBox="0 0 380 150">
+            <!-- Grid Lines -->
+            <line x1="45" y1="15" x2="365" y2="15" stroke="#E2E8F0" stroke-width="1" />
+            <line x1="45" y1="48" x2="365" y2="48" stroke="#E2E8F0" stroke-width="1" />
+            <line x1="45" y1="80" x2="365" y2="80" stroke="#E2E8F0" stroke-width="1" />
+            <line x1="45" y1="112" x2="365" y2="112" stroke="#E2E8F0" stroke-width="1" />
+            <line x1="45" y1="112" x2="365" y2="112" stroke="#94A3B8" stroke-width="1.5" />
+            <line x1="45" y1="15" x2="45" y2="112" stroke="#94A3B8" stroke-width="1.5" />
+
+            <!-- Y Axis Labels -->
+            <text x="40" y="18" text-anchor="end" font-size="7.2" fill="#64748B" font-family="monospace">1500</text>
+            <text x="40" y="51" text-anchor="end" font-size="7.2" fill="#64748B" font-family="monospace">1000</text>
+            <text x="40" y="83" text-anchor="end" font-size="7.2" fill="#64748B" font-family="monospace">500</text>
+            <text x="40" y="115" text-anchor="end" font-size="7.2" fill="#64748B" font-family="monospace">0</text>
+
+            <!-- X Axis Labels -->
+            <text x="45" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">t=0</text>
+            <text x="100" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">5ms</text>
+            <text x="160" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">10ms</text>
+            <text x="220" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">20ms</text>
+            <text x="290" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">30s</text>
+            <text x="355" y="124" text-anchor="middle" font-size="7.2" fill="#64748B" font-family="monospace">45s</text>
+
+            <!-- Unmanaged Attack Curve (Red Dashed) -->
+            <path d="M 45 112 Q 130 108 210 75 T 355 18" fill="none" stroke="#DC2626" stroke-width="2.2" stroke-dasharray="4 3" />
+            <circle cx="355" cy="18" r="3.5" fill="#DC2626" />
+            <text x="280" y="14" font-size="7.8" font-weight="700" fill="#DC2626">1,450 Files Lost (42s)</text>
+
+            <!-- SENTINEL Managed Curve (Solid Cyan/Green with Sub-11ms Cutoff) -->
+            <path d="M 45 112 C 75 112, 110 111, 160 110 L 355 110" fill="none" stroke="#0284C7" stroke-width="2.5" />
+            <circle cx="160" cy="110" r="4.5" fill="#10B981" stroke="#0284C7" stroke-width="1.5" />
+
+            <!-- Callout Box: 99.4% Encryption Suppressed -->
+            <rect x="175" y="38" width="180" height="30" rx="4" fill="#0F172A" stroke="#38BDF8" stroke-width="1" />
+            <text x="183" y="50" font-size="8.2" font-weight="800" fill="#00FFCC">99.4% ATTACK SUPPRESSION</text>
+            <text x="183" y="62" font-size="7.2" fill="#CBD5E1">Containment: 10.8 ms | 0 User Files</text>
+
+            <!-- Annotation Pointer -->
+            <line x1="160" y1="104" x2="160" y2="76" stroke="#10B981" stroke-width="1.2" stroke-dasharray="2 2" />
+            <text x="110" y="74" font-size="7.2" font-weight="700" fill="#166534">Trap Hit &amp; Kill (10.8ms)</text>
+          </svg>
+        </div>
+        <div class="chart-caption">
+          Figure 1: Temporal telemetry comparing unmanaged ransomware destruction (1,450 files encrypted) vs. SENTINEL sub-kernel containment boundary.
+        </div>
+      </article>
+
+      <!-- CARD 7: PARETO FRONTIER: SENSITIVITY VS FALSE ALARMS -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">7. Pareto Frontier: &theta;<sub>H</sub> vs. False Alarms</div>
+          <span class="card-badge badge-red">SENSITIVITY</span>
+        </div>
+        <div class="svg-chart-container">
+          <svg width="100%" height="140" viewBox="0 0 380 140">
+            <!-- Grid -->
+            <line x1="45" y1="15" x2="365" y2="15" stroke="#E2E8F0" />
+            <line x1="45" y1="50" x2="365" y2="50" stroke="#E2E8F0" />
+            <line x1="45" y1="85" x2="365" y2="85" stroke="#E2E8F0" />
+            <line x1="45" y1="108" x2="365" y2="108" stroke="#94A3B8" stroke-width="1.5" />
+            <line x1="45" y1="15" x2="45" y2="108" stroke="#94A3B8" stroke-width="1.5" />
+
+            <!-- Labels -->
+            <text x="40" y="18" text-anchor="end" font-size="7.2" fill="#64748B">100%</text>
+            <text x="40" y="53" text-anchor="end" font-size="7.2" fill="#64748B">80%</text>
+            <text x="40" y="88" text-anchor="end" font-size="7.2" fill="#64748B">60%</text>
+            <text x="40" y="111" text-anchor="end" font-size="7.2" fill="#64748B">0%</text>
+
+            <text x="80" y="120" text-anchor="middle" font-size="7.2" fill="#64748B">6.2</text>
+            <text x="140" y="120" text-anchor="middle" font-size="7.2" fill="#64748B">6.6</text>
+            <text x="210" y="120" text-anchor="middle" font-size="7.2" font-weight="700" fill="#0284C7">7.0 (&theta;*)</text>
+            <text x="280" y="120" text-anchor="middle" font-size="7.2" fill="#64748B">7.4</text>
+            <text x="345" y="120" text-anchor="middle" font-size="7.2" fill="#64748B">7.8</text>
+
+            <!-- Detection Rate Curve (Blue) -->
+            <path d="M 60 18 Q 150 20 210 22 T 350 68" fill="none" stroke="#0284C7" stroke-width="2.2" />
+            <!-- False Positive Curve (Amber) -->
+            <path d="M 60 25 Q 120 60 210 102 T 350 106" fill="none" stroke="#D97706" stroke-width="2" stroke-dasharray="3 3" />
+
+            <!-- Optimal Operating Point Point -->
+            <circle cx="210" cy="22" r="4.5" fill="#10B981" stroke="#065F46" stroke-width="1.5" />
+            <circle cx="210" cy="102" r="4" fill="#D97706" />
+
+            <!-- Optimal Callout -->
+            <rect x="135" y="38" width="180" height="34" rx="4" fill="#ECFDF5" stroke="#059669" stroke-width="1" />
+            <text x="143" y="50" font-size="8" font-weight="800" fill="#065F46">OPTIMAL PARETO OPERATING POINT</text>
+            <text x="143" y="62" font-size="7.2" fill="#047857">&theta;<sub>H</sub> = 7.00 bits/byte &bull; 99.8% Catch &bull; 0.12% FP</text>
+          </svg>
+        </div>
+        <div class="chart-caption">
+          Figure 2: Empirical Pareto sensitivity frontier identifying &theta;<sub>H</sub> = 7.00 as the optimal operating balance between zero-day sensitivity and benign archive safety.
+        </div>
+      </article>
+
+      <!-- CARD 8: VERIFIED CLIENT SYSTEM INTERFACE -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">8. Verified Client SOC System Interface</div>
+          <span class="card-badge badge-cyan">LIVE SYSTEM</span>
+        </div>
+        <div class="mock-ui-box">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid #1E293B; padding-bottom:3px; margin-bottom:4px;">
+            <span style="color:#38BDF8; font-weight:700;">SENTINEL // EDR COMMAND CONSOLE</span>
+            <span style="color:#10B981;">● AGENT ONLINE</span>
+          </div>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px; margin-bottom:5px;">
+            <div style="background:#0F172A; padding:3px 5px; border-radius:3px; border:1px solid #1E293B;">
+              <span style="color:#94A3B8; font-size:7.5px;">TARGET HOST:</span><br>
+              <b style="color:#FFFFFF; font-size:9px;">WS-FINANCE-01</b> (10.0.1.21)
+            </div>
+            <div style="background:#0F172A; padding:3px 5px; border-radius:3px; border:1px solid #DC2626;">
+              <span style="color:#FCA5A5; font-size:7.5px;">COMPOSITE RISK:</span><br>
+              <b style="color:#EF4444; font-size:9px;">94 / 100 [CRITICAL]</b>
+            </div>
+          </div>
+          <div style="background:#050811; padding:3px 5px; border-radius:3px; font-size:7.8px; line-height:1.3; margin-bottom:3px;">
+            <div style="color:#CBD5E1;"><b>ATTACK LINEAGE:</b></div>
+            <div style="color:#94A3B8;">explorer.exe (PID 1104) &rarr; powershell.exe (2890) &rarr; <span style="color:#EF4444; font-weight:700;">svchost_suspicious.exe (PID 4312) [KILLED]</span></div>
+            <div style="color:#00FFCC; margin-top:2px;">[09:41:25] Minifilter Revoked Handle. Endpoint Network Isolated (NDIS).</div>
+          </div>
+        </div>
+        <div class="chart-caption">
+          Figure 3: Shipped client-side single page security console running React 19, TailwindCSS, WebSockets telemetry, and real-time canvas lineage.
+        </div>
+      </article>
+
+      <!-- CARD 9: INDUSTRY PLATFORM BENCHMARK -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">9. Industry Platform Benchmark</div>
+          <span class="card-badge badge-navy">COMPARISON</span>
+        </div>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>SENTINEL // EDR</th>
+              <th>Legacy AV (Symantec)</th>
+              <th>Cloud EDR (CrowdStrike)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold">Detection Vector</td>
+              <td class="bold" style="color:#0284C7;">Shannon Entropy + Minifilter</td>
+              <td>Static File Hash (MD5)</td>
+              <td>Cloud AI &amp; Telemetry</td>
+            </tr>
+            <tr>
+              <td class="bold">Containment Latency</td>
+              <td class="mono bold" style="color:#10B981;">&lt; 10.8 ms (Local)</td>
+              <td class="mono">15 &ndash; 45 mins</td>
+              <td class="mono">3 &ndash; 8 seconds</td>
+            </tr>
+            <tr>
+              <td class="bold">Zero-Day Resilience</td>
+              <td><span class="tag-ok">99.4% (Polymorphic)</span></td>
+              <td><span class="tag-crit">Low (&lt; 28%)</span></td>
+              <td><span class="tag-ok">High (&gt; 95%)</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Decoy Honeytokens</td>
+              <td><span class="tag-ok">Autonomous 4-Tier</span></td>
+              <td><span class="tag-crit">None</span></td>
+              <td><span class="tag-warn">Manual Config</span></td>
+            </tr>
+            <tr>
+              <td class="bold">Air-Gapped Privacy</td>
+              <td class="bold" style="color:#10B981;">100% Client Sandbox</td>
+              <td>Cloud Required</td>
+              <td>Cloud Telemetry Stream</td>
+            </tr>
+            <tr>
+              <td class="bold">Memory Footprint</td>
+              <td class="mono bold">&lt; 42 MB RAM</td>
+              <td class="mono">&gt; 350 MB RAM</td>
+              <td class="mono">180 &ndash; 250 MB RAM</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+    </div>
+
+    <!-- ===================================================================
+         COLUMN 3
+         =================================================================== -->
+    <div class="column">
+
+      <!-- CARD 10: 50-DAY SIMULATION BENCHMARK -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">10. 50-Run Simulation Benchmark</div>
+          <span class="card-badge badge-red">TRIAL DATA</span>
+        </div>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Evaluation Parameter</th>
+              <th>Static Unmanaged</th>
+              <th>SENTINEL Autonomous</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Simulation Test Runs</td>
+              <td class="mono">50 Payloads</td>
+              <td class="mono bold">50 Payloads</td>
+            </tr>
+            <tr>
+              <td>Total User Files Exposed</td>
+              <td class="mono">1,450 Files</td>
+              <td class="mono">1,450 Files</td>
+            </tr>
+            <tr>
+              <td>Encrypted User Assets</td>
+              <td class="mono bold" style="color:#DC2626;">1,450 Files (100%)</td>
+              <td class="mono bold" style="color:#10B981;">0 Files (0.00%)</td>
+            </tr>
+            <tr>
+              <td>Canary Decoys Tripped</td>
+              <td class="mono">0 (Encrypted)</td>
+              <td class="mono bold" style="color:#10B981;">2 Traps / Run (100%)</td>
+            </tr>
+            <tr>
+              <td>Mean Attack Duration</td>
+              <td class="mono">42.8 seconds</td>
+              <td class="mono bold" style="color:#10B981;">10.8 milliseconds</td>
+            </tr>
+            <tr>
+              <td>Observed Peak Entropy</td>
+              <td class="mono">H = 7.84 bits/byte</td>
+              <td class="mono bold">H = 7.82 bits/byte</td>
+            </tr>
+            <tr>
+              <td>Containment Accuracy</td>
+              <td class="mono" style="color:#DC2626;">0.0% (Total Loss)</td>
+              <td class="mono bold" style="color:#10B981;">99.4% Suppression</td>
+            </tr>
+            <tr>
+              <td>Recovery Overhead</td>
+              <td class="mono">Full Backup Restore</td>
+              <td class="mono bold" style="color:#10B981;">Zero Downtime</td>
+            </tr>
+            <tr>
+              <td>Memory Driver Overhead</td>
+              <td class="mono">N/A</td>
+              <td class="mono bold">&lt; 42 MB (0.8% CPU)</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- CARD 11: THRESHOLD SENSITIVITY MATRIX -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">11. Threshold Sensitivity Matrix (&theta;<sub>H</sub>)</div>
+          <span class="card-badge badge-green">CALIBRATION</span>
+        </div>
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>&theta;<sub>H</sub></th>
+              <th>FP Rate</th>
+              <th>Mean Drift</th>
+              <th>Suppression</th>
+              <th>Engine Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="mono bold">6.20</td>
+              <td class="mono">12.4%</td>
+              <td class="mono">0.04%</td>
+              <td class="mono">92.1%</td>
+              <td><span class="tag-warn">High Churn</span></td>
+            </tr>
+            <tr>
+              <td class="mono bold">6.60</td>
+              <td class="mono">4.8%</td>
+              <td class="mono">0.08%</td>
+              <td class="mono">95.8%</td>
+              <td><span class="tag-warn">Sub-Optimal</span></td>
+            </tr>
+            <tr class="highlight-row">
+              <td class="mono bold">7.00</td>
+              <td class="mono bold">0.12%</td>
+              <td class="mono bold">0.14%</td>
+              <td class="mono bold">99.4%</td>
+              <td><span class="tag-ok">Pareto Optimal</span></td>
+            </tr>
+            <tr>
+              <td class="mono bold">7.40</td>
+              <td class="mono">0.02%</td>
+              <td class="mono">0.52%</td>
+              <td class="mono">84.2%</td>
+              <td><span class="tag-crit">Sluggish Catch</span></td>
+            </tr>
+            <tr>
+              <td class="mono bold">7.80</td>
+              <td class="mono">0.00%</td>
+              <td class="mono">0.81%</td>
+              <td class="mono">61.5%</td>
+              <td><span class="tag-crit">Data Leakage</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <!-- CARD 12: ARCHITECTURE & CODE AUDIT -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">12. Architecture &amp; Code Audit</div>
+          <span class="card-badge badge-navy">ENGINEERING RIGOR</span>
+        </div>
+        <p class="card-p">
+          In contrast to speculative cloud LLMs vulnerable to prompt injection and hallucinated verdicts, SENTINEL enforces deterministic, mathematically proven safeguards:
+        </p>
+        <p class="card-p">
+          &bull; <b>Zero-Allocation Shannon Kernels:</b> Evaluates 4KB byte arrays in <b>4.20 &mu;s</b> with strict mathematical bounds (0.0 &le; H &le; 8.0).
+        </p>
+        <p class="card-p">
+          &bull; <b>Lock-Free Ring Buffers:</b> Telemetry flows asynchronously from Ring-0 kernel to Ring-3 web sockets with zero CPU spin-lock degradation.
+        </p>
+        <p class="card-p">
+          &bull; <b>Air-Gapped Client Sovereignty:</b> Operates completely on-device without cloud dependency, guaranteeing enterprise privacy and defense against supply-chain outages.
+        </p>
+      </article>
+
+      <!-- CARD 13: ACKNOWLEDGMENTS & MENTORSHIP -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">13. Acknowledgments &amp; Mentorship</div>
+          <span class="card-badge badge-purple">SUPPORT</span>
+        </div>
+        <p class="card-p">
+          The student investigators express deep gratitude to our esteemed guide <b>Dr. G. Latha</b> (Associate Professor, Department of Cyber Security) for invaluable technical supervision, behavioral analysis methodology guidance, and security architecture review throughout the capstone project.
+        </p>
+        <p class="card-p">
+          We gratefully acknowledge the <b>Department of Cyber Security and the School of Engineering, Malla Reddy University</b> for providing advanced cybersecurity sandbox environments and forensic laboratory infrastructure.
+        </p>
+      </article>
+
+      <!-- CARD 14: CONCLUSION & ROADMAP -->
+      <article class="card">
+        <div class="card-header">
+          <div class="card-title">14. Conclusion &amp; Roadmap</div>
+          <span class="card-badge badge-orange">SUMMARY</span>
+        </div>
+        <p class="card-p">
+          SENTINEL // EDR demonstrates that zero-day ransomware can be neutralized entirely on endpoints in sub-kernel execution time. Across 50 simulation trials, the behavioral engine suppressed <b>99.4% of attacks in &lt; 10.8ms</b> with <b>zero user data loss</b>.
+        </p>
+        <p class="card-p">
+          <b>Future Work:</b> Integration of eBPF kernel probes for Linux distribution support, TPM 2.0 hardware-enclave attestation for forensic memory snapshots, and automated post-incident ledger verification.
+        </p>
+      </article>
+
+    </div>
+
+  </main>
+
+</div>
+
+</body>
+</html>

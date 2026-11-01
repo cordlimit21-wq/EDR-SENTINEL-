@@ -17,6 +17,7 @@ import {
   RotateCw,
   Server
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 const API_BASE = "http://localhost:8000";
 
@@ -119,6 +120,8 @@ export default function EndpointsView({ theme = 'dark' }) {
             <span className="text-[11px] font-mono text-orange-500 font-bold uppercase tracking-widest">ENDPOINT MANAGEMENT</span>
             <span className="text-slate-400">•</span>
             <span className="text-xs font-mono text-slate-500">FLEET SIZE: {endpoints.length} NODES</span>
+            <span className="text-slate-400">•</span>
+            <FeatureExplainer featureKey="endpoints" />
           </div>
           <h2 className="text-2xl font-bold font-mono text-slate-900 dark:text-white mt-1">
             PROTECTED ENDPOINTS

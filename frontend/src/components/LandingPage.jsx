@@ -106,10 +106,10 @@ export default function LandingPage({
               <span className="absolute bottom-0 left-0 w-full h-0.5 bg-orange-500 rounded-full" />
             </button>
             <button 
-              onClick={() => handleSmoothScroll('how-it-works')} 
+              onClick={() => handleSmoothScroll('capabilities')} 
               className="text-slate-600 dark:text-slate-400 hover:text-orange-500 dark:hover:text-white transition-colors"
             >
-              How It Works
+              Capabilities
             </button>
             <button 
               onClick={() => onNavigateView ? onNavigateView('protection') : handleSmoothScroll('risk-engine')} 
@@ -125,15 +125,25 @@ export default function LandingPage({
             </button>
           </nav>
 
-          {/* Right: Theme Toggle + LAUNCH EDR */}
-          <div className="flex items-center gap-4">
+          {/* Right: Theme Toggle + Auth / Launch EDR */}
+          <div className="flex items-center gap-3">
             <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+
+            {/* Direct Login link if not in dashboard */}
+            {onNavigateView && (
+              <button
+                onClick={() => onNavigateView('login')}
+                className="hidden sm:inline-flex items-center px-3.5 py-2 rounded-xl text-xs font-mono text-slate-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] transition-colors cursor-pointer"
+              >
+                Sign In
+              </button>
+            )}
 
             <button
               onClick={onLaunchEDR}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-slate-950 font-extrabold text-xs uppercase tracking-wider font-mono shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:brightness-105 active:scale-95 transition-all"
+              className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-slate-950 font-extrabold text-xs uppercase tracking-wider font-mono shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50 hover:brightness-105 active:scale-95 transition-all cursor-pointer"
             >
-              <span>LAUNCH EDR</span>
+              <span>Launch EDR Console</span>
               <ArrowRight className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" />
             </button>
           </div>
@@ -185,18 +195,18 @@ export default function LandingPage({
                 onClick={onLaunchEDR}
                 className="group flex items-center gap-2.5 px-7 py-3.5 rounded-xl bg-gradient-to-r from-orange-400 via-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-slate-950 font-extrabold font-mono text-xs sm:text-sm uppercase tracking-wider shadow-xl shadow-orange-500/35 hover:shadow-orange-500/50 hover:scale-[1.02] active:scale-95 transition-all duration-200"
               >
-                <span>LAUNCH EDR</span>
+                <span>Launch EDR Console</span>
                 <ArrowRight className="w-4 h-4 text-slate-950 stroke-[2.5] group-hover:translate-x-1 transition-transform" />
               </button>
 
               <button
-                onClick={() => handleSmoothScroll('how-it-works')}
+                onClick={() => handleSmoothScroll('capabilities')}
                 className="flex items-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-900/60 hover:bg-slate-800/80 dark:bg-[#090e1a]/90 dark:hover:bg-[#12192b] border border-slate-300 dark:border-white/[0.18] hover:border-slate-400 dark:hover:border-white/40 text-slate-800 dark:text-slate-200 font-mono text-xs sm:text-sm font-bold transition-all duration-200 shadow-sm"
               >
                 <div className="w-4 h-4 rounded-full border border-slate-400/60 dark:border-slate-400 flex items-center justify-center">
                   <Play className="w-2.5 h-2.5 fill-slate-700 dark:fill-slate-200 text-slate-700 dark:text-slate-200 ml-0.5" />
                 </div>
-                <span>HOW IT WORKS →</span>
+                <span>Explore Capabilities →</span>
               </button>
             </div>
 
@@ -226,10 +236,10 @@ export default function LandingPage({
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. HOW IT WORKS SECTION (Full-Width 5-Step Visual Workflow)                */}
+      {/* 3. CAPABILITIES & DETECTION PIPELINE SECTION                                */}
       {/* ========================================================================= */}
-      <section id="how-it-works" className="relative z-10 py-20 px-6 lg:px-12 border-t border-slate-200 dark:border-white/[0.08] bg-slate-100/60 dark:bg-[#070b14]/70">
-        <div className="max-w-7xl mx-auto space-y-12">
+      <section id="capabilities" className="relative z-10 py-20 px-6 lg:px-12 border-t border-slate-200 dark:border-white/[0.08] bg-slate-100/60 dark:bg-[#070b14]/70">
+        <div id="how-it-works" className="max-w-7xl mx-auto space-y-12">
           
           {/* Section Header */}
           <div className="text-center space-y-3 max-w-3xl mx-auto">

@@ -39,35 +39,35 @@ export default function EndpointThreatCoreGraphic({ theme = 'dark' }) {
         className="w-full h-full relative z-10 overflow-visible"
       >
         <defs>
-          {/* Gradients */}
+          {/* Gradients using SENTINEL design system */}
           <linearGradient id="cyanDataStream" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00c8ff" stopOpacity="0.1" />
-            <stop offset="70%" stopColor="#00c8ff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#00e5ff" stopOpacity="1" />
+            <stop offset="0%" stopColor="#39E7FF" stopOpacity="0.1" />
+            <stop offset="70%" stopColor="#39E7FF" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#39E7FF" stopOpacity="1" />
           </linearGradient>
 
           <linearGradient id="threatDataStream" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ff4500" stopOpacity="0.1" />
-            <stop offset="60%" stopColor="#ff6a00" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#ff0055" stopOpacity="1" />
+            <stop offset="0%" stopColor="#FF7548" stopOpacity="0.1" />
+            <stop offset="60%" stopColor="#FF7548" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#FF5268" stopOpacity="1" />
           </linearGradient>
 
           <linearGradient id="purpleAnalyticStream" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#9b5cff" stopOpacity="0.1" />
-            <stop offset="70%" stopColor="#9b5cff" stopOpacity="0.8" />
-            <stop offset="100%" stopColor="#d946ef" stopOpacity="1" />
+            <stop offset="0%" stopColor="#A78BFA" stopOpacity="0.1" />
+            <stop offset="70%" stopColor="#A78BFA" stopOpacity="0.8" />
+            <stop offset="100%" stopColor="#C084FC" stopOpacity="1" />
           </linearGradient>
 
           <radialGradient id="endpointCoreGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#ff6a00" stopOpacity="0.35" />
-            <stop offset="60%" stopColor="#ff0055" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#00c8ff" stopOpacity="0" />
+            <stop offset="0%" stopColor="#FF7548" stopOpacity="0.35" />
+            <stop offset="60%" stopColor="#FF5268" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#39E7FF" stopOpacity="0" />
           </radialGradient>
 
           <linearGradient id="radarSweepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00c8ff" stopOpacity="0" />
-            <stop offset="85%" stopColor="#00c8ff" stopOpacity="0.1" />
-            <stop offset="100%" stopColor="#00c8ff" stopOpacity="0.4" />
+            <stop offset="0%" stopColor="#39E7FF" stopOpacity="0" />
+            <stop offset="85%" stopColor="#39E7FF" stopOpacity="0.1" />
+            <stop offset="100%" stopColor="#39E7FF" stopOpacity="0.4" />
           </linearGradient>
 
           {/* Filter for subtle cyber glow */}

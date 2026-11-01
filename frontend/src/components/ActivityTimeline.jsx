@@ -11,6 +11,7 @@ import {
   Radio,
   FileText
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ActivityTimeline({ 
   events = [], 
@@ -64,6 +65,7 @@ export default function ActivityTimeline({
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                 Live WebSocket
               </span>
+              <FeatureExplainer featureKey="live-activity" />
             </h2>
             <p className="text-[10px] text-slate-500">
               Real-time NTFS filesystem I/O and process execution events

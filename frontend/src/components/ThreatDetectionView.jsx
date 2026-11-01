@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Zap
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ThreatDetectionView({ 
   latestThreatEvent, 
@@ -99,6 +100,7 @@ export default function ThreatDetectionView({
                 <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-600 text-white animate-pulse">
                   CRITICAL
                 </span>
+                <FeatureExplainer featureKey="threat-detection" />
               </div>
               <p className="text-xs text-rose-300/80 mt-1">
                 Zero-Day Ransomware Behavioral Heuristic Threshold Breached

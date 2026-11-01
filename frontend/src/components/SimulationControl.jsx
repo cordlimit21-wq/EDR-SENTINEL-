@@ -12,6 +12,7 @@ import {
   FileText,
   AlertTriangle
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function SimulationControl({ 
   onSimulateAttack, 
@@ -105,8 +106,9 @@ export default function SimulationControl({
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 dark:bg-orange-400 animate-ping" />
             <span>CONTROLLED ENVIRONMENT SIMULATION</span>
           </div>
-          <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-wide">
-            Zero-Day Ransomware Attack Simulation
+          <h2 className="text-base sm:text-lg font-extrabold text-slate-900 dark:text-white tracking-wide flex items-center gap-2">
+            <span>Zero-Day Ransomware Attack Simulation</span>
+            <FeatureExplainer featureKey="simulation-lab" />
           </h2>
           <p className="text-[11px] text-slate-600 dark:text-slate-400">
             Executes real high-frequency, high-entropy write burst inside <code className="text-orange-600 dark:text-orange-400 font-semibold">EDR_Test/</code> to evaluate live detection and containment.

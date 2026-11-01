@@ -10,6 +10,7 @@ import {
   Filter,
   ArrowUpDown
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ThreatHistoryView({ 
   threats = [], 
@@ -54,6 +55,7 @@ export default function ThreatHistoryView({
               <span className="text-[10px] px-2 py-0.5 rounded-full bg-orange-100 dark:bg-slate-900 text-orange-700 dark:text-orange-300 border border-orange-300 dark:border-orange-500/30">
                 {threats.length} Neutralized Outbreaks
               </span>
+              <FeatureExplainer featureKey="threat-history" />
             </h1>
             <p className="text-[11px] text-slate-500">
               Complete Forensics of Neutralized Zero-Day Ransomware Attacks

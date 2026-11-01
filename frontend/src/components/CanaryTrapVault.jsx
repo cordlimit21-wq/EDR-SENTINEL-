@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   AlertTriangle
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function CanaryTrapVault({ 
   traps = [], 
@@ -133,6 +134,18 @@ export default function CanaryTrapVault({
         </div>
       </div>
 
+      {/* Real vs Fleet Simulation Disclosure Banner */}
+      <div className="p-3.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono text-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 uppercase">
+            LIVE & EXTENDED FLEET
+          </span>
+          <span className="text-slate-300">
+            Active filesystem tripwires in <code className="text-cyan-300 bg-cyan-950/50 px-1 py-0.5 rounded">EDR_Test/Decoy/</code> are monitored in real time via kernel file watch hooks. Additional entries represent enterprise-wide honeypot distribution across remote volumes.
+          </span>
+        </div>
+      </div>
+
       {/* 2. Decoy Fleet Inventory Table */}
       <div className="cyber-card rounded-2xl overflow-hidden shadow-xl">
         {/* Controls */}
@@ -142,8 +155,9 @@ export default function CanaryTrapVault({
               <Crosshair className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200">
+              <h2 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200 flex items-center gap-2">
                 CANARY DECOY INVENTORY
+                <FeatureExplainer featureKey="canary-vault" />
               </h2>
               <p className="text-[10px] text-slate-500">
                 Strategic Honeypot Files Deployed Across Enterprise Volumes

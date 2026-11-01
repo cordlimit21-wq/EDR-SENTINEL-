@@ -11,6 +11,7 @@ import {
   Terminal,
   Activity
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 const API_BASE = "http://localhost:8000";
 
@@ -110,6 +111,8 @@ export default function ContainmentView({ theme = 'dark' }) {
             <span className="text-[11px] font-mono text-emerald-500 font-bold uppercase tracking-widest">ACTIVE MITIGATION DISPATCHER</span>
             <span className="text-slate-400">•</span>
             <span className="text-xs font-mono text-slate-500">SIMULATED ZERO-DESTRUCTIVE RESPONSES</span>
+            <span className="text-slate-400">•</span>
+            <FeatureExplainer featureKey="containment" />
           </div>
           <h2 className="text-2xl font-bold font-mono text-slate-900 dark:text-white mt-1">
             CONTAINMENT ACTIONS
@@ -123,6 +126,18 @@ export default function ContainmentView({ theme = 'dark' }) {
         >
           <RotateCw className="w-4 h-4" />
         </button>
+      </div>
+
+      {/* Transparency & Safety Notice */}
+      <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 border border-amber-500/40 text-amber-300 uppercase">
+            SIMULATED ENFORCEMENT
+          </span>
+          <span className="text-slate-300">
+            Containment actions update prototype state and dispatch WebSocket events. Low-level OS network driver detachment is simulated for developer environment safety.
+          </span>
+        </div>
       </div>
 
       {feedbackMsg && (

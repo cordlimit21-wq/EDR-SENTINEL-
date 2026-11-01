@@ -20,6 +20,7 @@ from detector.behavior_engine import BehaviorEngine
 from detector.file_monitor import FileSystemMonitor
 from detector.test_generator import TestBehaviorGenerator
 from report_generator import generate_sentinel_pdf, load_incident_json
+import auth
 
 
 # -----------------------------------------------------------------------------
@@ -795,6 +796,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Mount Authentication & User Management Router
+app.include_router(auth.router)
+
 
 # -----------------------------------------------------------------------------
 # REST Endpoints: Stats & Dashboard
@@ -1037,10 +1041,38 @@ async def add_incident_note(incident_id: str, payload: Dict[str, str]):
 async def get_report_pdf(incident_id: str = "INC-2026-0042"):
     """
     Generate and stream an enterprise publication-grade PDF forensic report
-    using strictly SENTINEL_INCIDENT_REPORT_INC-2026-0042.json with accurate timestamps.
+    using the selected incident's actual data with accurate Asia/Kolkata (IST) timestamps.
     """
     try:
-        incident_data = load_incident_json()
+        # 1. Search incident in INCIDENTS_STORE
+        target_inc = None
+        for inc in INCIDENTS_STORE:
+            if inc.id.lower() == incident_id.lower():
+                target_inc = inc
+                break
+
+        if target_inc:
+            incident_data = target_inc.model_dump()
+            # Enrich with endpoint metadata (IP, OS, MAC) if available
+            for ep in ENDPOINTS_STORE:
+                if ep.hostname.lower() == (target_inc.endpoint or "").lower() or ep.id.lower() == (target_inc.endpoint_id or "").lower():
+                    incident_data["ip"] = ep.ip
+                    incident_data["os"] = ep.os
+                    incident_data["mac"] = ep.mac
+                    break
+
+            # If this is INC-2026-0042, merge with authoritative forensic JSON
+            if incident_id.upper() == "INC-2026-0042":
+                try:
+                    json_data = load_incident_json()
+                    incident_data = {**json_data, **incident_data}
+                except Exception:
+                    pass
+        elif incident_id.upper() == "INC-2026-0042":
+            incident_data = load_incident_json()
+        else:
+            raise HTTPException(status_code=404, detail=f"Incident {incident_id} not found")
+
         pdf_bytes = generate_sentinel_pdf(data=incident_data)
         filename = f"SENTINEL_EDR_Report_{incident_id}.pdf"
         return Response(
@@ -1051,6 +1083,8 @@ async def get_report_pdf(incident_id: str = "INC-2026-0042"):
                 "Content-Type": "application/pdf"
             }
         )
+    except HTTPException:
+        raise
     except Exception as e:
         import traceback
         traceback.print_exc()
@@ -1060,16 +1094,27 @@ async def get_report_pdf(incident_id: str = "INC-2026-0042"):
 @app.post("/api/reports/generate-pdf")
 async def post_generate_report_pdf(payload: Optional[Dict[str, Any]] = None):
     """
-    Generate PDF report from incident payload using SENTINEL_INCIDENT_REPORT_INC-2026-0042.json.
+    Generate PDF report from incident payload with fallback to store data.
     """
     try:
-        incident_data = load_incident_json()
         if payload:
-            incident_data = {**incident_data, **payload}
+            inc_id = payload.get("id") or payload.get("incidentId") or "INC-2026-0042"
+            base_data = {}
+            for inc in INCIDENTS_STORE:
+                if inc.id.lower() == str(inc_id).lower():
+                    base_data = inc.model_dump()
+                    break
 
-        inc_id = incident_data.get("incidentId", "INC-2026-0042")
+            if not base_data and str(inc_id).upper() == "INC-2026-0042":
+                base_data = load_incident_json()
+
+            incident_data = {**base_data, **payload}
+        else:
+            incident_data = load_incident_json()
+
+        actual_id = incident_data.get("id") or incident_data.get("incidentId") or "INC-2026-0042"
         pdf_bytes = generate_sentinel_pdf(data=incident_data)
-        filename = f"SENTINEL_EDR_Report_{inc_id}.pdf"
+        filename = f"SENTINEL_EDR_Report_{actual_id}.pdf"
         return Response(
             content=pdf_bytes,
             media_type="application/pdf",

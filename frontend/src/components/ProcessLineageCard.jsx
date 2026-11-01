@@ -14,6 +14,7 @@ import {
   Zap,
   Activity
 } from 'lucide-react';
+import FeatureExplainer from './FeatureExplainer';
 
 export default function ProcessLineageCard({ 
   selectedEvent, 
@@ -50,6 +51,7 @@ export default function ProcessLineageCard({
                   ZERO-DAY CONTAINMENT
                 </span>
               )}
+              <FeatureExplainer featureKey="process-lineage" />
             </h2>
             <p className="text-[10px] text-slate-500 dark:text-slate-500">
               Visual parent-child ancestry and behavioral impact branches

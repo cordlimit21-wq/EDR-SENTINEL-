@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { AuthProvider, useAuth } from './context/AuthContext';
 import LandingPage from './components/LandingPage';
 import ProtectionView from './components/ProtectionView';
 import ArchitectureView from './components/ArchitectureView';
+import LoginPage from './components/LoginPage';
+import SignupPage from './components/SignupPage';
+import ForgotPasswordPage from './components/ForgotPasswordPage';
 import Sidebar from './components/Sidebar';
 import Navbar from './components/Navbar';
 import OverviewView from './components/OverviewView';
@@ -22,11 +26,14 @@ import DetectionRulesView from './components/DetectionRulesView';
 import ContainmentView from './components/ContainmentView';
 import ReportsView from './components/ReportsView';
 import NetworkActivityView from './components/NetworkActivityView';
+import { Shield } from 'lucide-react';
 
 const API_BASE = "http://localhost:8000";
 const WS_URL = "ws://localhost:8000/ws/telemetry";
 
-export default function App() {
+function MainApp() {
+  const { isAuthenticated, isLoading, user } = useAuth();
+
   // 1. Theme Management (Dark by default, persisted in localStorage)
   const [theme, setTheme] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -50,15 +57,78 @@ export default function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
-  // 2. Navigation State: 'landing' | 'protection' | 'architecture' | 'dashboard'
+  // 2. Navigation State: 'landing' | 'protection' | 'architecture' | 'dashboard' | 'login' | 'signup' | 'forgot-password'
   const [currentView, setCurrentView] = useState(() => {
     if (typeof window !== 'undefined') {
-      if (window.location.pathname === '/dashboard') return 'dashboard';
-      if (window.location.pathname === '/protection') return 'protection';
-      if (window.location.pathname === '/architecture') return 'architecture';
+      const path = window.location.pathname;
+      if (path === '/dashboard') return 'dashboard';
+      if (path === '/protection') return 'protection';
+      if (path === '/architecture') return 'architecture';
+      if (path === '/login') return 'login';
+      if (path === '/signup') return 'signup';
+      if (path === '/forgot-password') return 'forgot-password';
     }
     return 'landing';
   });
+
+  const [intendedDestination, setIntendedDestination] = useState('dashboard');
+
+  // URL Sync
+  const navigateTo = (view) => {
+    setCurrentView(view);
+    if (typeof window !== 'undefined' && window.history) {
+      let path = '/';
+      if (view === 'dashboard') path = '/dashboard';
+      else if (view === 'protection') path = '/protection';
+      else if (view === 'architecture') path = '/architecture';
+      else if (view === 'login') path = '/login';
+      else if (view === 'signup') path = '/signup';
+      else if (view === 'forgot-password') path = '/forgot-password';
+      window.history.pushState(null, '', path);
+    }
+  };
+
+  // Browser popstate navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const path = window.location.pathname;
+      if (path === '/dashboard') setCurrentView('dashboard');
+      else if (path === '/protection') setCurrentView('protection');
+      else if (path === '/architecture') setCurrentView('architecture');
+      else if (path === '/login') setCurrentView('login');
+      else if (path === '/signup') setCurrentView('signup');
+      else if (path === '/forgot-password') setCurrentView('forgot-password');
+      else setCurrentView('landing');
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  // Protected route enforcement & auth redirection
+  useEffect(() => {
+    if (isLoading) return;
+
+    // 1. Direct or attempted unauthenticated access to /dashboard -> redirect to /login
+    if (currentView === 'dashboard' && !isAuthenticated) {
+      setIntendedDestination('dashboard');
+      navigateTo('login');
+    }
+
+    // 2. Authenticated user visiting /login or /signup -> redirect to /dashboard
+    if ((currentView === 'login' || currentView === 'signup') && isAuthenticated) {
+      navigateTo('dashboard');
+    }
+  }, [currentView, isAuthenticated, isLoading]);
+
+  // Handle "Launch EDR" action from public pages
+  const handleLaunchEDR = () => {
+    if (isAuthenticated) {
+      navigateTo('dashboard');
+    } else {
+      setIntendedDestination('dashboard');
+      navigateTo('login');
+    }
+  };
 
   // 3. Console Tabs:
   // 'overview' | 'live-threats' | 'endpoints' | 'incidents' | 'attack-timeline' | 'processes' | 'file-activity' | 'network-activity' | 'detection-rules' | 'containment' | 'reports' | 'settings'
@@ -93,29 +163,6 @@ export default function App() {
 
   const socketRef = useRef(null);
   const reconnectTimeoutRef = useRef(null);
-
-  // URL Sync
-  const navigateTo = (view) => {
-    setCurrentView(view);
-    if (typeof window !== 'undefined' && window.history) {
-      const path = view === 'dashboard' ? '/dashboard' : 
-                   view === 'protection' ? '/protection' :
-                   view === 'architecture' ? '/architecture' : '/';
-      window.history.pushState(null, '', path);
-    }
-  };
-
-  useEffect(() => {
-    const handlePopState = () => {
-      const path = window.location.pathname;
-      if (path === '/dashboard') setCurrentView('dashboard');
-      else if (path === '/protection') setCurrentView('protection');
-      else if (path === '/architecture') setCurrentView('architecture');
-      else setCurrentView('landing');
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
 
   // 5. Initial REST Hydration
   const fetchData = async () => {
@@ -305,7 +352,7 @@ export default function App() {
   if (currentView === 'landing') {
     return (
       <LandingPage
-        onLaunchEDR={() => navigateTo('dashboard')}
+        onLaunchEDR={handleLaunchEDR}
         onNavigateView={(v) => navigateTo(v)}
         stats={stats}
         theme={theme}
@@ -319,7 +366,7 @@ export default function App() {
     return (
       <ProtectionView
         onNavigateHome={() => navigateTo('landing')}
-        onLaunchEDR={() => navigateTo('dashboard')}
+        onLaunchEDR={handleLaunchEDR}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
@@ -331,14 +378,87 @@ export default function App() {
     return (
       <ArchitectureView
         onNavigateHome={() => navigateTo('landing')}
-        onLaunchEDR={() => navigateTo('dashboard')}
+        onLaunchEDR={handleLaunchEDR}
         theme={theme}
         onToggleTheme={toggleTheme}
       />
     );
   }
 
-  // ROUTE 4: EDR Security Operations Console
+  // ROUTE 4: Enterprise Authentication - Sign In
+  if (currentView === 'login') {
+    return (
+      <LoginPage
+        onNavigateHome={() => navigateTo('landing')}
+        onNavigateSignup={() => navigateTo('signup')}
+        onNavigateForgotPassword={() => navigateTo('forgot-password')}
+        onLoginSuccess={() => navigateTo(intendedDestination || 'dashboard')}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
+  }
+
+  // ROUTE 5: Enterprise Authentication - Sign Up / Registration
+  if (currentView === 'signup') {
+    return (
+      <SignupPage
+        onNavigateHome={() => navigateTo('landing')}
+        onNavigateLogin={() => navigateTo('login')}
+        onSignupSuccess={() => navigateTo('dashboard')}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
+  }
+
+  // ROUTE 6: Enterprise Authentication - Self-Service Password Recovery
+  if (currentView === 'forgot-password') {
+    return (
+      <ForgotPasswordPage
+        onNavigateHome={() => navigateTo('landing')}
+        onNavigateLogin={() => navigateTo('login')}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
+  }
+
+  // ROUTE 7: EDR Security Operations Console (Protected)
+  // If loading session verification, show a cyber security loading screen
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#05070d] flex flex-col items-center justify-center font-mono text-cyan-400 p-6 selection:bg-orange-500">
+        <div className="relative flex items-center justify-center mb-6">
+          <div className="w-16 h-16 rounded-full border-2 border-cyan-500/20 border-t-cyan-400 animate-spin" />
+          <Shield className="w-7 h-7 text-cyan-400 absolute animate-pulse" />
+        </div>
+        <div className="text-center space-y-2">
+          <div className="text-xs tracking-[0.25em] text-cyan-500 uppercase font-bold">
+            SENTINEL // EDR CORE
+          </div>
+          <div className="text-sm text-slate-300">
+            Verifying SOC analyst security credentials & session...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Unauthenticated access guard fallback
+  if (!isAuthenticated) {
+    return (
+      <LoginPage
+        onNavigateHome={() => navigateTo('landing')}
+        onNavigateSignup={() => navigateTo('signup')}
+        onNavigateForgotPassword={() => navigateTo('forgot-password')}
+        onLoginSuccess={() => navigateTo(intendedDestination || 'dashboard')}
+        theme={theme}
+        onToggleTheme={toggleTheme}
+      />
+    );
+  }
+
   return (
     <div className="relative flex h-screen w-screen overflow-hidden bg-[#f1f5f9] dark:bg-[#05070d] text-slate-900 dark:text-slate-100 font-sans selection:bg-orange-500 selection:text-black">
       {/* Ambient Animated Digital Background */}
@@ -395,8 +515,8 @@ export default function App() {
               />
             )}
 
-            {/* View 2: Live Threats */}
-            {currentTab === 'live-threats' && (
+            {/* View 2: Live Threats / Threat Detection */}
+            {(currentTab === 'live-threats' || currentTab === 'threat-detection') && (
               <ThreatDetectionView
                 latestThreatEvent={latestThreatEvent}
                 allThreatEvents={allThreatEvents}
@@ -405,6 +525,30 @@ export default function App() {
                   setLatestThreatEvent(t);
                 }}
                 onNavigateTab={(tab) => setCurrentTab(tab)}
+                theme={theme}
+              />
+            )}
+
+            {/* View: Threat Hunting */}
+            {currentTab === 'threat-hunting' && (
+              <ThreatHuntingView
+                events={events}
+                onSelectEvent={(evt) => setSelectedEvent(evt)}
+                onViewForensics={handleViewForensicsForEvent}
+                theme={theme}
+              />
+            )}
+
+            {/* View: Threat History */}
+            {currentTab === 'threat-history' && (
+              <ThreatHistoryView
+                threats={allThreatEvents.length > 0 ? allThreatEvents : events.filter(e => e.severity === 'CRITICAL_KILL')}
+                onSelectThreat={(t) => {
+                  setSelectedEvent(t);
+                  setLatestThreatEvent(t);
+                }}
+                onViewForensics={handleViewForensicsForEvent}
+                onSimulateAttack={handleSimulateAttack}
                 theme={theme}
               />
             )}
@@ -419,8 +563,8 @@ export default function App() {
               <IncidentsView theme={theme} />
             )}
 
-            {/* View 5: Attack Timeline */}
-            {currentTab === 'attack-timeline' && (
+            {/* View 5: Attack Timeline / Live Activity */}
+            {(currentTab === 'attack-timeline' || currentTab === 'live-activity') && (
               <ActivityTimeline
                 events={events}
                 onSelectEvent={(evt) => setSelectedEvent(evt)}
@@ -439,6 +583,46 @@ export default function App() {
                 isFullPage={true}
                 theme={theme}
               />
+            )}
+
+            {/* View: Process Lineage */}
+            {currentTab === 'process-lineage' && (
+              <div className="space-y-4">
+                <ProcessLineageCard
+                  selectedEvent={selectedEvent}
+                  latestThreatEvent={latestThreatEvent}
+                  allThreatEvents={allThreatEvents}
+                  onSelectThreat={(t) => {
+                    setSelectedEvent(t);
+                    setLatestThreatEvent(t);
+                  }}
+                  isFullPage={true}
+                  theme={theme}
+                />
+              </div>
+            )}
+
+            {/* View: Canary / Decoy Vault */}
+            {currentTab === 'canary-vault' && (
+              <CanaryTrapVault
+                traps={traps}
+                onAuditTraps={fetchData}
+                isFullPage={true}
+                theme={theme}
+              />
+            )}
+
+            {/* View: Simulation Lab */}
+            {currentTab === 'simulation-lab' && (
+              <div className="space-y-6">
+                <SimulationControl
+                  onSimulateAttack={handleSimulateAttack}
+                  isSimulating={isSimulating}
+                  latestThreatEvent={latestThreatEvent}
+                  stats={stats}
+                  theme={theme}
+                />
+              </div>
             )}
 
             {/* View 7: File Activity */}
@@ -491,5 +675,13 @@ export default function App() {
         onClose={() => setAlertModalEvent(null)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <MainApp />
+    </AuthProvider>
   );
 }
